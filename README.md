@@ -6,6 +6,8 @@
 
 PHP-маршрутизатор из экосистемы **evas-php**. Поддерживает явный маппинг маршрутов (Map routing), автоматическую маршрутизацию по файлам, классам, методам класса и кастомной функции, middleware-цепочки, вложенные группы маршрутов, алиасы путей и REST-синтаксис.
 
+Подробное руководство: [router.evas-php.com](https://router.evas-php.com/)
+
 ---
 
 ## Быстрый старт
@@ -235,6 +237,18 @@ $router->autoByMethod('/profile/', function () {
 ```
 
 `GET /profile/edit` → `ProfileController::editAction()`. Без `classCustom` последний сегмент пути трактуется как метод, остальные — как имя класса (`\`-склейка).
+
+Автоматическое разрешение класса и метода из пути без явного `classCustom`:
+
+```php
+$router->autoByMethod('/api/v1', function () {
+    $this->classPrefix('Controllers\\Api\\')
+        ->classPostfix('Controller')
+        ->methodPostfix('Action');
+});
+```
+
+`GET /api/v1/user/list` → `Controllers\Api\UserController::listAction()`.
 
 ### Авто-роутинг по кастомной функции
 
